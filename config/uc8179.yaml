@@ -12,5 +12,4 @@ external_components:
       type: local
       path: ../components
 
-example_component:
-  foo: true
+uc8179:

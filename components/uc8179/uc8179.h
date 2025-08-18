@@ -2,10 +2,12 @@
 
 #include "esphome/core/component.h"
 
-namespace esphome {
-namespace example_component {
+namespace esphome
+{
+namespace uc8719
+{
 
-class ExampleComponent : public Component
+class UC8179 : public Component
 {
 public:
     void setup() override;
@@ -22,5 +24,5 @@ protected:
     int baz_{0};
 };
 
-} // namespace example_component
+} // namespace uc8719
 } // namespace esphome
