@@ -32,5 +32,28 @@ void UC8179Base::dump_config()
     }
 }
 
+void UC8179Base::command(uint8_t value) {
+  this->start_command_();
+  this->write_byte(value);
+  this->end_command_();
+}
+void UC8179Base::data(uint8_t value) {
+  this->start_data_();
+  this->write_byte(value);
+  this->end_data_();
+}
+
+void UC8179Base::start_command_() {
+  this->dc_pin_->digital_write(false);
+  this->enable();
+}
+void UC8179Base::end_command_() { this->disable(); }
+void UC8179Base::start_data_() {
+  this->dc_pin_->digital_write(true);
+  this->enable();
+}
+void UC8179Base::end_data_() { this->disable(); }
+
+
 } // namespace uc8179
 } // namespace esphome

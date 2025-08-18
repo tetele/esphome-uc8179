@@ -19,10 +19,27 @@ public:
     void set_busy_pin(GPIOPin *busy_pin) { this->busy_pin_ = busy_pin; }
     void set_reset_pin(GPIOPin *reset_pin) { this->reset_pin_ = reset_pin; }
 
+    void command(uint8_t value);
+    void data(uint8_t value);
+
 protected:
     GPIOPin *dc_pin_{nullptr};
     GPIOPin *busy_pin_{nullptr};
     GPIOPin *reset_pin_{nullptr};
+
+    void reset_() {
+        if (this->reset_pin_ != nullptr) {
+            this->reset_pin_->digital_write(false);
+            delay(2); // min 50us
+            this->reset_pin_->digital_write(true);
+            delay(20);
+        }
+    }
+
+    void start_command_();
+    void end_command_();
+    void start_data_();
+    void end_data_();
 };
 class UC8179 : public UC8179Base
 {
