@@ -8,7 +8,7 @@ namespace esphome
 namespace uc8179
 {
 
-class UC8179 : public Component, public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW, spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_2MHZ>
+class UC8179Base : public Component, public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW, spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_2MHZ>
 {
 public:
     void setup() override;
@@ -23,6 +23,9 @@ protected:
     GPIOPin *dc_pin_{nullptr};
     GPIOPin *busy_pin_{nullptr};
     GPIOPin *reset_pin_{nullptr};
+};
+class UC8179 : public UC8179Base
+{
 };
 
 } // namespace uc8179
