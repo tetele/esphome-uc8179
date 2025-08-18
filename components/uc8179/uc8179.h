@@ -43,6 +43,13 @@ protected:
 };
 class UC8179 : public UC8179Base
 {
+public:
+    void set_idle_timeout(uint32_t idle_timeout) { this->idle_timeout_ = idle_timeout; }
+
+
+protected:
+    bool wait_until_idle_();
+    uint32_t idle_timeout_{1000u};
 };
 
 } // namespace uc8179

@@ -55,5 +55,21 @@ void UC8179Base::start_data_() {
 void UC8179Base::end_data_() { this->disable(); }
 
 
+bool UC8179::wait_until_idle_() {
+    if (this->busy_pin_ == nullptr || !this->busy_pin_->digital_read()) {
+        return true;
+    }
+
+    const uint32_t start = millis();
+    while (this->busy_pin_->digital_read()) {
+        if (millis() - start > this->idle_timeout_) {
+            ESP_LOGE(TAG, "Timeout while displaying image!");
+            return false;
+        }
+        delay(1);
+    }
+    return true;
+}
+
 } // namespace uc8179
 } // namespace esphome
