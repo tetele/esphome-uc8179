@@ -23,6 +23,13 @@ void UC8179::loop()
 void UC8179::dump_config()
 {
     ESP_LOGCONFIG(TAG, "UC8179 EPD Driver");
+    ESP_LOGCONFIG(TAG, "  dc_pin = %s", this->dc_pin_->dump_summary());
+    if(this->busy_pin_ != nullptr) {
+        ESP_LOGCONFIG(TAG, "  busy_pin = %s", this->busy_pin_->dump_summary());
+    }
+    if(this->reset_pin_ != nullptr) {
+        ESP_LOGCONFIG(TAG, "  reset_pin = %s", this->reset_pin_->dump_summary());
+    }
 }
 
 } // namespace uc8179
