@@ -13,7 +13,11 @@ external_components:
       path: ../components
 
 spi:
-  clk_pin: GPIOXX
-  mosi_pin: GPIOXX
+  clk_pin: GPIO13
+  mosi_pin: GPIO14
 
 uc8179:
+  cs_pin: 15
+  dc_pin: 27
+  busy_pin: 25
+  reset_pin: 26
