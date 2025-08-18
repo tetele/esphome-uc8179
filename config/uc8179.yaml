@@ -12,4 +12,8 @@ external_components:
       type: local
       path: ../components
 
+spi:
+  clk_pin: GPIOXX
+  mosi_pin: GPIOXX
+
 uc8179:
