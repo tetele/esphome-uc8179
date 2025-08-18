@@ -3,10 +3,10 @@
 
 namespace esphome
 {
-namespace uc8719
+namespace uc8179
 {
 
-static const char *TAG = "uc8719.component";
+static const char *TAG = "uc8179.component";
 
 void UC8179::setup()
 {
@@ -25,5 +25,5 @@ void UC8179::dump_config()
     ESP_LOGCONFIG(TAG, "UC8179 EPD Driver");
 }
 
-} // namespace uc8719
+} // namespace uc8179
 } // namespace esphome

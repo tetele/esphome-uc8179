@@ -5,7 +5,7 @@
 
 namespace esphome
 {
-namespace uc8719
+namespace uc8179
 {
 
 class UC8179 : public Component, public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW, spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_2MHZ>
@@ -25,5 +25,5 @@ protected:
     GPIOPin *reset_pin_{nullptr};
 };
 
-} // namespace uc8719
+} // namespace uc8179
 } // namespace esphome
