@@ -28,6 +28,7 @@ protected:
     PSR_UD gate_scan_dir_{PSR_UD_UP};
     PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
     PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
+    CDI_CDI vcom_data_interval_{CDI_CDI_10_HSYNC};
 
     bool transmit_old_data_{false};
 

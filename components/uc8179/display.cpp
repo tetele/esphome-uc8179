@@ -21,6 +21,23 @@ void UC8179DisplayBase::setup() {
 void UC8179DisplayBase::setup_panel() {
     this->driver_->cmd_panel_setting(this->lut_location_, this->kwr_mode_, this->gate_scan_dir_, this->source_shift_dir_, this->booster_switch_, PSR_RST_N_NO_EFFECT);
     this->driver_->cmd_resolution_setting(this->get_width_internal(), this->get_height_internal());
+
+    CDI_N2OCP copy_new_to_old = CDI_N2OCP_DISABLED;
+    CDI_BDV lut_selection;
+    CDI_DDX data_polarity;
+    if(this->kwr_mode_ == PSR_KWR_KW) {
+        if(this->transmit_old_data_) {
+            copy_new_to_old = CDI_N2OCP_ENABLED;
+            data_polarity = CDI_DDX_KW_N_O_W0K1;
+        } else {
+            data_polarity = CDI_DDX_KW_N_W0K1;
+        }
+        lut_selection = CDI_BDV_KW_W0K1_LUTKW;
+    } else {
+        data_polarity = CDI_DDX_KWR_W0K1R1;
+        lut_selection = CDI_BDV_KWR_W0K1_LUTBD;
+    }
+    this->driver_->cmd_vcom_data_interval_setting(CDI_BDZ_DISABLED, lut_selection, copy_new_to_old, data_polarity, this->vcom_data_interval_);
 }
 
 void UC8179DisplayBase::display() {
