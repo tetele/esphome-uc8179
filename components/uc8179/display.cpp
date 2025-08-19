@@ -100,6 +100,8 @@ void GDEY075T7::setup() {
     c1_phase.strength = BTST_BT_PHASE_STRENGTH_2;
     c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
     this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
+
+    this->driver_->cmd_dual_spi_mode(DUSPI_MM_EN_DISABLE, DUSPI_DUSPI_EN_DISABLE);
 }
 
 } // namespace uc8179
