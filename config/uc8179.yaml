@@ -21,3 +21,7 @@ uc8179:
   dc_pin: 27
   busy_pin: 25
   reset_pin: 26
+
+display:
+  - platform: uc8179
+    model: GDEY075T7

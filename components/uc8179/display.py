@@ -11,7 +11,14 @@ uc8179_ns = cg.esphome_ns.namespace("uc8179")
 UC8179 = uc8179_ns.class_("UC8179", cg.Component)
 UC8179DisplayBase = uc8179_ns.class_("UC8179DisplayBase", display.DisplayBuffer)
 
-MODELS = {}
+UC8179Display_KW = uc8179_ns.class_("UC8179Display_KW", UC8179DisplayBase)
+UC8179Display_G4 = uc8179_ns.class_("UC8179Display_G4", UC8179Display_KW)
+
+GDEY075T7 = uc8179_ns.class_("GDEY075T7", UC8179Display_G4)
+
+MODELS = {
+    "gdey075t7": GDEY075T7,
+}
 
 CONFIG_SCHEMA = cv.Schema(
     {

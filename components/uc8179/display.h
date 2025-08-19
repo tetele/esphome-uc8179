@@ -59,5 +59,13 @@ protected:
     void draw_absolute_pixel_internal(int x, int y, Color color) override;
 };
 
+// Actual display models
+
+class GDEY075T7 : public UC8179Display_G4 {
+public:
+  int get_width_internal() override { return 800; }
+  int get_height_internal() override { return 480; }
+};
+
 } // namespace uc8179
 } // namespace esphome
