@@ -35,7 +35,10 @@ void UC8179DisplayBase::setup_panel() {
     this->driver_->cmd_panel_setting(this->lut_location_, this->kwr_mode_, this->gate_scan_dir_, this->source_shift_dir_, this->booster_switch_, PSR_RST_N_NO_EFFECT);
 }
 
-void UC8179DisplayBase::send_buffer_internal_() {
+void UC8179DisplayBase::display() {
+    this->initialize();
+    this->send_buffer_internal_();
+    this->driver_->cmd_display_refresh();
 }
 
 void UC8179DisplayBase::initialize() {
@@ -47,6 +50,12 @@ void UC8179Display_KW::initialize() {
     UC8179DisplayBase::initialize();
     this->kwr_mode_ = PSR_KWR_KW;
     this->setup_panel();
+}
+
+void UC8179Display_KW::send_buffer_internal_() {
+    // KW mode, so we need to send OLD data and NEW data
+    this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
+    this->driver_->cmd_data_start_transmission_2(this->buffer_, this->get_buffer_size_());
 }
 
 void UC8179Display_KW::draw_absolute_pixel_internal(int x, int y, Color color) {
@@ -66,6 +75,12 @@ void UC8179Display_G4::initialize() {
     UC8179DisplayBase::initialize();
     this->kwr_mode_ = PSR_KWR_KW;
     this->setup_panel();
+}
+
+void UC8179Display_G4::send_buffer_internal_() {
+    // KW mode, so we need to send OLD data and NEW data
+    this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
+    this->driver_->cmd_data_start_transmission_2(this->buffer_, this->get_buffer_size_());
 }
 
 void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {

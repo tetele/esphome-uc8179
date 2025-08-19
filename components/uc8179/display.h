@@ -16,7 +16,7 @@ public:
     void setup() override;
     void setup_panel();
 
-    virtual void display() = 0;
+    virtual void display();
 
 protected:
     UC8179 *driver_{nullptr};
@@ -31,7 +31,7 @@ protected:
     void initialize();
 
     size_t get_buffer_size_() { return this->get_width() * this->get_height() / this->pixels_per_byte_(); }
-    void send_buffer_internal_();
+    virtual void send_buffer_internal_() = 0;
 };
 
 // Color scales
@@ -45,6 +45,7 @@ public:
 protected:
     uint32_t pixels_per_byte_() { return 8; }
 
+    void send_buffer_internal_() override;
     void draw_absolute_pixel_internal(int x, int y, Color color) override;
 };
 
@@ -57,6 +58,7 @@ public:
 protected:
     uint32_t pixels_per_byte_() { return 4; }
 
+    void send_buffer_internal_() override;
     void draw_absolute_pixel_internal(int x, int y, Color color) override;
 };
 
