@@ -22,12 +22,7 @@ public:
     void command(uint8_t value);
     void data(uint8_t value);
 
-protected:
-    GPIOPin *dc_pin_{nullptr};
-    GPIOPin *busy_pin_{nullptr};
-    GPIOPin *reset_pin_{nullptr};
-
-    void reset_() {
+    void reset() {
         if (this->reset_pin_ != nullptr) {
             this->reset_pin_->digital_write(false);
             delay(2); // min 50us
@@ -35,6 +30,11 @@ protected:
             delay(20);
         }
     }
+
+protected:
+    GPIOPin *dc_pin_{nullptr};
+    GPIOPin *busy_pin_{nullptr};
+    GPIOPin *reset_pin_{nullptr};
 
     void start_command_();
     void end_command_();
