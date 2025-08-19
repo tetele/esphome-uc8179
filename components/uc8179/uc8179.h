@@ -318,6 +318,18 @@ typedef enum { // number of hsyncs between VCOM ready and source data output
     CDI_CDI_3_HSYNC = 0x0E,
     CDI_CDI_2_HSYNC = 0x0F,
 } CDI_CDI;
+
+// END VOLTAGE SETTING (EVS) (R52H)
+typedef enum { // VCOM end voltage selection
+    EVS_VCEND_VCOM_DC = 0x00, // default
+    EVS_VCEND_FLOATING = 0x08,
+} EVS_VCEND;
+
+typedef enum { // Border end voltage selection
+    EVS_BDEND_0 = 0x00,
+    EVS_BDEND_VCOM_DC = 0x02,   // default
+    EVS_BDEND_FLOATING = 0x03,
+} EVS_BDEND;
 class UC8179 : public UC8179Base
 {
 public:
@@ -425,6 +437,12 @@ public:
         this->command(0x50);
         this->data((uint8_t)border_hi_impedance | (uint8_t)lut_selection | (uint8_t)copy_new_to_old | (uint8_t)data_polarity);
         this->data(vcom_data_interval);
+    }
+
+    void cmd_end_voltage_setting(EVS_VCEND vcom_end_voltage, EVS_BDEND border_end_voltage) {
+        // This command selects source end voltage and border end voltage after LUTs are finished.
+        this->command(0x52);
+        this->data((uint8_t)vcom_end_voltage | (uint8_t)border_end_voltage);
     }
 
     void cmd_resolution_setting(uint hres, uint vres) {
