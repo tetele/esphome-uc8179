@@ -194,6 +194,12 @@ typedef enum { // Booster phase-C2 enable
                                 // If temperature > temperature boundary phase-C2(RE7h[7:0]), phase-C1 setting is applied for booster phase-C.
                                 // If temperature <= temperature boundary phase-C2(RE7h[7:0]), phase-C2 setting is applied for booster phase-C.
 } BTST_PHC2EN;
+
+// DATA STOP (DSP) (R11H)
+typedef enum {
+    DSP_DATA_FLAG_NOT_RECEIVED = 0x00,
+    DSP_DATA_FLAG_RECEIVED = 0x80,
+} DSP_DATA_FLAG;
 class UC8179 : public UC8179Base
 {
 public:
@@ -256,6 +262,33 @@ public:
         this->wait_until_idle_();
     }
 
+    void cmd_data_start_transmission_1(const uint8_t *data, size_t length) {
+        // This command starts transmitting data and write them into SRAM.
+        // In KW mode, this command writes “OLD” data to SRAM.
+        // In KWR mode, this command writes “K/W” data to SRAM.
+        // In Program mode, this command writes “OTP” data to SRAM for programming.
+        this->command(0x10);
+        this->data(data, length);
+        this->wait_until_idle_();
+    }
+
+    void cmd_data_stop(DSP_DATA_FLAG data_received) {
+        // Check the completeness of data. If data is complete, start to refresh display
+        this->command(0x11);
+        this->data(data_received);
+        if(data_received == DSP_DATA_FLAG_RECEIVED) {
+            this->wait_until_idle_();
+        }
+    }
+
+    void cmd_data_start_transmission_2(const uint8_t *data, size_t length) {
+        // This command starts transmitting data and write them into SRAM.
+        // In KW mode, this command writes “NEW” data to SRAM.
+        // In KWR mode, this command writes “RED” data to SRAM.
+        this->command(0x13);
+        this->data(data, length);
+        this->wait_until_idle_();
+    }
 
 protected:
     bool wait_until_idle_();
