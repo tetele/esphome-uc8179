@@ -330,6 +330,45 @@ typedef enum { // Border end voltage selection
     EVS_BDEND_VCOM_DC = 0x02,   // default
     EVS_BDEND_FLOATING = 0x03,
 } EVS_BDEND;
+
+// TCON SETTING (TCON) (R60H)
+typedef enum { // Source to Gate Non-overlap period in multiples of 667ns
+    TCON_S2G_4 = 0x00,
+    TCON_S2G_8 = 0x10,
+    TCON_S2G_12 = 0x20, // default
+    TCON_S2G_16 = 0x30,
+    TCON_S2G_20 = 0x40,
+    TCON_S2G_24 = 0x50,
+    TCON_S2G_28 = 0x60,
+    TCON_S2G_32 = 0x70,
+    TCON_S2G_36 = 0x80,
+    TCON_S2G_40 = 0x90,
+    TCON_S2G_44 = 0xA0,
+    TCON_S2G_48 = 0xB0,
+    TCON_S2G_52 = 0xC0,
+    TCON_S2G_56 = 0xD0,
+    TCON_S2G_60 = 0xE0,
+    TCON_S2G_64 = 0xF0,
+} TCON_S2G;
+
+typedef enum { // Gate to Source Non-overlap period in multiples of 667ns
+    TCON_G2S_4 = 0x00,
+    TCON_G2S_8 = 0x01,
+    TCON_G2S_12 = 0x02, // default
+    TCON_G2S_16 = 0x03,
+    TCON_G2S_20 = 0x04,
+    TCON_G2S_24 = 0x05,
+    TCON_G2S_28 = 0x06,
+    TCON_G2S_32 = 0x07,
+    TCON_G2S_36 = 0x08,
+    TCON_G2S_40 = 0x09,
+    TCON_G2S_44 = 0x0A,
+    TCON_G2S_48 = 0x0B,
+    TCON_G2S_52 = 0x0C,
+    TCON_G2S_56 = 0x0D,
+    TCON_G2S_60 = 0x0E,
+    TCON_G2S_64 = 0x0F,
+} TCON_G2S;
 class UC8179 : public UC8179Base
 {
 public:
@@ -443,6 +482,12 @@ public:
         // This command selects source end voltage and border end voltage after LUTs are finished.
         this->command(0x52);
         this->data((uint8_t)vcom_end_voltage | (uint8_t)border_end_voltage);
+    }
+
+    void cmd_tcon_setting(TCON_S2G source_to_gate_interval, TCON_G2S gate_to_source_iterval) {
+        // This command defines non-overlap period of Gate and Source
+        this->command(0x60);
+        this->data((uint8_t)source_to_gate_interval | (uint8_t)gate_to_source_iterval);
     }
 
     void cmd_resolution_setting(uint hres, uint vres) {
