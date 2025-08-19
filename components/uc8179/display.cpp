@@ -20,6 +20,7 @@ void UC8179DisplayBase::setup() {
 
 void UC8179DisplayBase::setup_panel() {
     this->driver_->cmd_panel_setting(this->lut_location_, this->kwr_mode_, this->gate_scan_dir_, this->source_shift_dir_, this->booster_switch_, PSR_RST_N_NO_EFFECT);
+    this->driver_->cmd_resolution_setting(this->get_width_internal(), this->get_height_internal());
 }
 
 void UC8179DisplayBase::display() {

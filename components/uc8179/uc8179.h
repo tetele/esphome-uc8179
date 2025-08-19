@@ -297,6 +297,14 @@ public:
         this->wait_until_idle_();
     }
 
+    void cmd_resolution_setting(uint hres, uint vres) {
+        this->command(0x61);
+        this->data(hres>>8);
+        this->data(hres&0xF8);
+        this->data(vres>>8);
+        this->data(vres&0xFF);
+    }
+
 protected:
     bool wait_until_idle_();
     uint32_t idle_timeout_{1000u};
