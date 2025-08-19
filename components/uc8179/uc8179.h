@@ -160,6 +160,30 @@ public:
         this->data(vdhr_power);
     }
 
+    void cmd_power_off() {
+        // After the Power OFF command, the driver will be powered OFF. Refer to the POWER MANAGEMENT section for the sequence.
+        // This command will turn off booster, controller, source driver, gate driver, VCOM, and temperature sensor, but register data will be
+        // kept until VDD turned OFF or Deep Sleep Mode. Source/Gate/Border/VCOM will be released to floating.
+        this->command(0x02);
+        this->wait_until_idle_();
+    }
+
+    void cmd_power_on() {
+        // After the Power ON command, the driver will be powered ON. Refer to the POWER MANAGEMENT section for the sequence.
+        // This command will turn on booster, controller, regulators, and temperature sensor will be activated for one-time sensing before
+        // enabling booster. When all voltages are ready, the BUSY_N signal will return to high.
+        this->command(0x04);
+        this->wait_until_idle_();
+    }
+
+    void cmd_deep_sleep() {
+        // After this command is transmitted, the chip will enter Deep Sleep Mode to save power. Deep Sleep Mode will return to Standby
+        // Mode by hardware reset. The only one parameter is a check code, the command will be executed if check code = 0xA5.
+        this->command(0x07);
+        this->data(0xA5);
+        this->wait_until_idle_();
+    }
+
 
 protected:
     bool wait_until_idle_();
