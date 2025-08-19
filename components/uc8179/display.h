@@ -23,15 +23,6 @@ protected:
     UC8179 *driver_{nullptr};
     virtual uint32_t pixels_per_byte_();
 
-    PSR_REG lut_location_{PSR_REG_LUT_FROM_OTP};
-    PSR_KWR kwr_mode_{PSR_KWR_KW};
-    PSR_UD gate_scan_dir_{PSR_UD_UP};
-    PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
-    PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
-    CDI_CDI vcom_data_interval_{CDI_CDI_10_HSYNC};
-
-    bool transmit_old_data_{false};
-
     void initialize();
 
     size_t get_buffer_size_() { return this->get_width() * this->get_height() / this->pixels_per_byte_(); }

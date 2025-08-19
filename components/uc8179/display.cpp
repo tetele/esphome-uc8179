@@ -16,58 +16,45 @@ void UC8179DisplayBase::update() {
 void UC8179DisplayBase::setup() {
     this->driver_->reset();
     this->init_internal_(this->get_buffer_size_());
+    this->driver_->set_lut_location(PSR_REG_LUT_FROM_OTP);
+    this->driver_->set_kwr_mode(PSR_KWR_KW);
+    this->driver_->set_gate_scan_dir(PSR_UD_UP);
+    this->driver_->set_source_shift_dir(PSR_SHL_RIGHT);
+    this->driver_->set_booster_switch(PSR_SHD_N_OFF);
+    this->driver_->set_vcom_data_interval(CDI_CDI_10_HSYNC);
 }
 
 void UC8179DisplayBase::setup_panel() {
-    this->driver_->cmd_panel_setting(this->lut_location_, this->kwr_mode_, this->gate_scan_dir_, this->source_shift_dir_, this->booster_switch_, PSR_RST_N_NO_EFFECT);
-    this->driver_->cmd_resolution_setting(this->get_width_internal(), this->get_height_internal());
-
-    CDI_N2OCP copy_new_to_old = CDI_N2OCP_DISABLED;
-    CDI_BDV lut_selection;
-    CDI_DDX data_polarity;
-    if(this->kwr_mode_ == PSR_KWR_KW) {
-        if(this->transmit_old_data_) {
-            copy_new_to_old = CDI_N2OCP_ENABLED;
-            data_polarity = CDI_DDX_KW_N_O_W0K1;
-        } else {
-            data_polarity = CDI_DDX_KW_N_W0K1;
-        }
-        lut_selection = CDI_BDV_KW_W0K1_LUTKW;
-    } else {
-        data_polarity = CDI_DDX_KWR_W0K1R1;
-        lut_selection = CDI_BDV_KWR_W0K1_LUTBD;
-    }
-    this->driver_->cmd_vcom_data_interval_setting(CDI_BDZ_DISABLED, lut_selection, copy_new_to_old, data_polarity, this->vcom_data_interval_);
+    this->driver_->setup_panel();
+    this->driver_->setup_resolution(this->get_width_internal(), this->get_height_internal());
+    this->driver_->setup_waveform();
 }
 
 void UC8179DisplayBase::display() {
     this->initialize();
     this->send_buffer_internal_();
-    this->driver_->cmd_display_refresh();
+    this->driver_->refresh();
 }
 
 void UC8179DisplayBase::deep_sleep() {
-    this->driver_->cmd_power_off();
-    this->driver_->cmd_deep_sleep();
+    this->driver_->power_off();
+    this->driver_->deep_sleep();
 }
 
 void UC8179DisplayBase::initialize() {
     this->driver_->reset();
-    this->driver_->cmd_power_on();
+    this->driver_->power_on();
 }
 
 void UC8179Display_KW::initialize() {
     UC8179DisplayBase::initialize();
-    this->kwr_mode_ = PSR_KWR_KW;
-    this->transmit_old_data_ = true;
+    this->driver_->set_kwr_mode(PSR_KWR_KW);
+    this->driver_->set_transmit_old_data(true);
     this->setup_panel();
 }
 
 void UC8179Display_KW::send_buffer_internal_() {
-    // KW mode, so we need to send OLD data and NEW data
-    if(this->transmit_old_data_)
-        this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
-    this->driver_->cmd_data_start_transmission_2(this->buffer_, this->get_buffer_size_());
+    this->driver_->load_image_data(this->buffer_, this->get_buffer_size_());
 }
 
 void UC8179Display_KW::draw_absolute_pixel_internal(int x, int y, Color color) {
@@ -108,7 +95,7 @@ void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
 void GDEY075T7::setup() {
     UC8179DisplayBase::setup();
 
-    this->driver_->cmd_power_setting(PWR_BD_EN_OFF, PWR_VSR_EN_INTERNAL, PWR_VS_EN_INTERNAL, PWR_VG_EN_INTERNAL, PWR_VCOM_SLEW_DEFAULT, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);
+    this->driver_->setup_power(false, true, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);
 
     BTST_BT_PHASE std_phase;
     std_phase.period = BTST_BT_PHASE_PERIOD_10MS;
@@ -118,11 +105,11 @@ void GDEY075T7::setup() {
     c1_phase.period = BTST_BT_PHASE_PERIOD_10MS;
     c1_phase.strength = BTST_BT_PHASE_STRENGTH_2;
     c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
-    this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
+    this->driver_->setup_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
 
-    this->driver_->cmd_dual_spi_mode(DUSPI_MM_EN_DISABLE, DUSPI_DUSPI_EN_DISABLE);
+    this->driver_->setup_dual_spi(false);
 
-    this->driver_->cmd_tcon_setting(TCON_S2G_12, TCON_G2S_12);
+    this->driver_->set_non_overlap_period(TCON_G2S_12);
 }
 
 } // namespace uc8179
