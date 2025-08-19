@@ -200,6 +200,17 @@ typedef enum {
     DSP_DATA_FLAG_NOT_RECEIVED = 0x00,
     DSP_DATA_FLAG_RECEIVED = 0x80,
 } DSP_DATA_FLAG;
+
+// DUAL SPI MODE (DUSPI) (R15H)
+typedef enum { // MM input pin definition enable.
+    DUSPI_MM_EN_DISABLE = 0x00,
+    DUSPI_MM_EN_ENABLE = 0x20,
+} DUSPI_MM_EN;
+
+typedef enum { // Dual SPI mode enable
+    DUSPI_DUSPI_EN_DISABLE = 0x00,
+    DUSPI_DUSPI_EN_ENABLE = 0x10,
+} DUSPI_DUSPI_EN;
 class UC8179 : public UC8179Base
 {
 public:
@@ -295,6 +306,11 @@ public:
         this->command(0x13);
         this->data(data, length);
         this->wait_until_idle_();
+    }
+
+    void cmd_dual_spi_mode(DUSPI_MM_EN mm_pin, DUSPI_DUSPI_EN dual_spi) {
+        this->command(0x15);
+        this->data((uint8_t)mm_pin | (uint8_t)dual_spi);
     }
 
     void cmd_resolution_setting(uint hres, uint vres) {
