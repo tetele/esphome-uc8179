@@ -28,8 +28,7 @@ void UC8179DisplayBase::setup() {
     c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
     this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
 
-    size_t size = this->get_width() * this->get_height() / this->pixels_per_byte_();
-    this->init_internal_(size);
+    this->init_internal_(this->get_buffer_size_());
 }
 
 void UC8179DisplayBase::setup_panel() {

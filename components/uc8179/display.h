@@ -30,6 +30,7 @@ protected:
 
     void initialize();
 
+    size_t get_buffer_size_() { return this->get_width() * this->get_height() / this->pixels_per_byte_(); }
     void send_buffer_internal_();
 };
 
