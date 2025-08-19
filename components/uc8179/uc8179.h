@@ -373,6 +373,40 @@ class UC8179 : public UC8179Base
 {
 public:
     void set_idle_timeout(uint32_t idle_timeout) { this->idle_timeout_ = idle_timeout; }
+    void set_lut_location(PSR_REG lut_location) { this->lut_location_ = lut_location; };
+    void set_kwr_mode(PSR_KWR kwr_mode) { this->kwr_mode_ = kwr_mode; };
+    void set_gate_scan_dir(PSR_UD gate_scan_dir) { this->gate_scan_dir_ = gate_scan_dir; };
+    void set_source_shift_dir(PSR_SHL source_shift_dir) { this->source_shift_dir_ = source_shift_dir; };
+    void set_booster_switch(PSR_SHD_N booster_switch) { this->booster_switch_ = booster_switch; };
+    void set_vcom_data_interval(CDI_CDI vcom_data_interval) { this->vcom_data_interval_ = vcom_data_interval; };
+    void set_non_overlap_period(TCON_G2S non_overlap_period) { this->non_overlap_period_ = non_overlap_period; };
+    void set_transmit_old_data(bool transmit_old_data) { this->transmit_old_data_ = transmit_old_data; };
+
+    void setup_panel();
+    void setup_power(bool border_ldo, bool internal_power, PWR_VG_LVL voltage_level, PWR_VDH_LVL kw_high_level, PWR_VDL_LVL kw_low_level, PWR_VDHR_LVL red_level);
+    void setup_dual_spi(bool dual);
+    void setup_resolution(uint width, uint height);
+    void setup_waveform();
+    void setup_booster_soft_start(BTST_BT_PHASE a, BTST_BT_PHASE b, BTST_BT_PHASE c1, BTST_PHC2EN c2_enabled, BTST_BT_PHASE c2);
+
+    void power_on() { this->cmd_power_on(); };
+    void power_off() { this->cmd_power_off(); };
+    void refresh() { this->cmd_display_refresh(); };
+    void deep_sleep() { this->cmd_deep_sleep(); };
+
+    void load_image_data(const uint8_t *data, size_t length);
+
+protected:
+    bool wait_until_idle_();
+    uint32_t idle_timeout_{1000u};
+    PSR_REG lut_location_{PSR_REG_LUT_FROM_OTP};
+    PSR_KWR kwr_mode_{PSR_KWR_KW};
+    PSR_UD gate_scan_dir_{PSR_UD_UP};
+    PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
+    PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
+    CDI_CDI vcom_data_interval_{CDI_CDI_10_HSYNC};
+    TCON_G2S non_overlap_period_{TCON_G2S_12}; // value is left-shifted 4 bits (<<4) to get the S2G interval
+    bool transmit_old_data_{false};
 
     void cmd_panel_setting(PSR_REG lut_location, PSR_KWR kwr, PSR_UD gate_scan_dir, PSR_SHL source_shift_dir, PSR_SHD_N booster_switch, PSR_RST_N reset) {
         this->command(0x00);
@@ -497,10 +531,6 @@ public:
         this->data(vres>>8);
         this->data(vres&0xFF);
     }
-
-protected:
-    bool wait_until_idle_();
-    uint32_t idle_timeout_{1000u};
 };
 
 } // namespace uc8179
