@@ -149,6 +149,51 @@ typedef enum { // Source to gate power off interval time (in frames)
     PFS_T_VDS_OFF_3 = 0b00110000,
     PFS_T_VDS_OFF_4 = 0b00110000,
 } PFS_T_VDS_OFF;
+
+// BOOSTER SOFT START (BTST) (R06H)
+typedef enum { // Soft start period of phase
+    BTST_BT_PHASE_PERIOD_10MS = 0b00000000, // default
+    BTST_BT_PHASE_PERIOD_20MS = 0b01000000,
+    BTST_BT_PHASE_PERIOD_30MS = 0b10000000,
+    BTST_BT_PHASE_PERIOD_40MS = 0b11000000,
+} BTST_BT_PHASE_PERIOD;
+
+typedef enum { // Driving strength of phase
+    BTST_BT_PHASE_STRENGTH_1 = 0b00000000,
+    BTST_BT_PHASE_STRENGTH_2 = 0b00001000,
+    BTST_BT_PHASE_STRENGTH_3 = 0b00010000,  // default
+    BTST_BT_PHASE_STRENGTH_4 = 0b00011000,
+    BTST_BT_PHASE_STRENGTH_5 = 0b00100000,
+    BTST_BT_PHASE_STRENGTH_6 = 0b00101000,
+    BTST_BT_PHASE_STRENGTH_7 = 0b00110000,
+    BTST_BT_PHASE_STRENGTH_8 = 0b00111000,  // strongest
+} BTST_BT_PHASE_STRENGTH;
+
+typedef enum { // Minimum OFF time setting of GDR in phase
+    BTST_BT_PHASE_OFF_0_27_US = 0b00000000,
+    BTST_BT_PHASE_OFF_0_34_US = 0b00000001,
+    BTST_BT_PHASE_OFF_0_40_US = 0b00000010,
+    BTST_BT_PHASE_OFF_0_54_US = 0b00000011,
+    BTST_BT_PHASE_OFF_0_80_US = 0b00000100,
+    BTST_BT_PHASE_OFF_1_54_US = 0b00000101,
+    BTST_BT_PHASE_OFF_3_34_US = 0b00000110,
+    BTST_BT_PHASE_OFF_6_58_US = 0b00000111, // default
+} BTST_BT_PHASE_OFF;
+
+typedef struct {
+    BTST_BT_PHASE_PERIOD period;
+    BTST_BT_PHASE_STRENGTH strength;
+    BTST_BT_PHASE_OFF off_time;
+} BTST_BT_PHASE;
+#define BTST_BT_PHASE_CREATE(PHASE) ((uint8_t)PHASE.period | (uint8_t)PHASE.strength | (uint8_t)PHASE.off_time)
+
+typedef enum { // Booster phase-C2 enable
+    BTST_PHC2EN_DISABLE = 0x00, // Booster phase-C2 disable
+                                // Phase-C1 setting always is applied for booster phase-C.
+    BTST_PHC2EN_ENABLE = 0x80,  // Booster phase-C2 enable
+                                // If temperature > temperature boundary phase-C2(RE7h[7:0]), phase-C1 setting is applied for booster phase-C.
+                                // If temperature <= temperature boundary phase-C2(RE7h[7:0]), phase-C2 setting is applied for booster phase-C.
+} BTST_PHC2EN;
 class UC8179 : public UC8179Base
 {
 public:
@@ -193,6 +238,14 @@ public:
         // This command enables the internal bandgap, which will be cleared by the next POF.
         this->command(0x05);
         this->wait_until_idle_();
+    }
+
+    void cmd_booster_soft_start(BTST_BT_PHASE a, BTST_BT_PHASE b, BTST_BT_PHASE c1, BTST_PHC2EN c2_enabled, BTST_BT_PHASE c2) {
+        this->command(0x06);
+        this->data(BTST_BT_PHASE_CREATE(a));
+        this->data(BTST_BT_PHASE_CREATE(b));
+        this->data(BTST_BT_PHASE_CREATE(c1));
+        this->data(BTST_BT_PHASE_CREATE(c2) & (~0x80) | (uint8_t)c2_enabled);
     }
 
     void cmd_deep_sleep() {
