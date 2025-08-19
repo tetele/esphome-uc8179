@@ -211,6 +211,113 @@ typedef enum { // Dual SPI mode enable
     DUSPI_DUSPI_EN_DISABLE = 0x00,
     DUSPI_DUSPI_EN_ENABLE = 0x10,
 } DUSPI_DUSPI_EN;
+
+// VCOM AND DATA INTERVAL SETTING (CDI) (R50H)
+typedef enum { // Border Hi-Z control
+    CDI_BDZ_DISABLED = 0x00,    // default
+    CDI_BDZ_ENABLED = 0x80,
+} CDI_BDZ;
+
+typedef enum { // Border LUT selection
+    // Values repeat based on scenario
+    // KW without R mode
+        // DDX[0] = 0 <=> W=0
+            CDI_BDV_KW_W0K1_LUTBD = 0x00,
+            CDI_BDV_KW_W0K1_LUTKW = 0x01,
+            CDI_BDV_KW_W0K1_LUTWK = 0x02,
+            CDI_BDV_KW_W0K1_LUTKK = 0x03,
+        // DDX[0] = 1 <=> W=1
+            CDI_BDV_KW_W1K0_LUTKK = 0x00,
+            CDI_BDV_KW_W1K0_LUTWK = 0x01,
+            CDI_BDV_KW_W1K0_LUTKW = 0x02,
+            CDI_BDV_KW_W1K0_LUTBD = 0x03,
+    // KWR mode
+        // DDX[0] = 0
+            CDI_BDV_KWR_W0K1_LUTBD = 0x00,
+            CDI_BDV_KWR_W0K1_LUTR = 0x01,
+            CDI_BDV_KWR_W0K1_LUTW = 0x02,
+            CDI_BDV_KWR_W0K1_LUTK = 0x03,
+        // DDX[0] = 1
+            CDI_BDV_KWR_W1K0_LUTK = 0x00,
+            CDI_BDV_KWR_W1K0_LUTW = 0x01,
+            CDI_BDV_KWR_W1K0_LUTR = 0x02,
+            CDI_BDV_KWR_W1K0_LUTBD = 0x03,
+} CDI_BDV;
+
+typedef enum { // Copy frame data from NEW data to OLD data enable control after display refresh with NEW/OLD in KW mode
+    CDI_N2OCP_DISABLED = 0x00,  // default
+    CDI_N2OCP_ENABLED = 0x08,
+} CDI_N2OCP;
+
+typedef enum { // Data polarity
+    // KW without R mode
+        // DDX[1]=0 is for KW mode with NEW/OLD
+            CDI_DDX_KW_N_O_W0K1 = 0x00,
+                //  Data{new, old}  LUT
+                //  00              LUTWW (0 -> 0)
+                //  01              LUTKW (1 -> 0)
+                //  10              LUTWK (0 -> 1)
+                //  11              LUTKK (1 -> 1)
+            CDI_DDX_KW_N_O_W1K0 = 0x01,   // default
+                //  Data{new, old}  LUT
+                //  00              LUTKK (0 -> 0)
+                //  01              LUTWK (1 -> 0)
+                //  10              LUTKW (0 -> 1)
+                //  11              LUTWW (1 -> 1)
+        // DDX[1]=1 is for KW mode without NEW/OLD.
+            CDI_DDX_KW_N_W0K1 = 0x02,
+                //  Data{new}   LUT
+                //  0           LUTKW (1 -> 0)
+                //  1           LUTWK (0 -> 1)
+            CDI_DDX_KW_N_W1K0 = 0x03,
+                //  Data{new}   LUT
+                //  0           LUTWK (1 -> 0)
+                //  1           LUTKW (0 -> 1)
+    // KWR mode
+        CDI_DDX_KWR_W0K1R1 = 0x00,
+                //  Data{red, KW}   LUT
+                //  00              LUTW
+                //  01              LUTK
+                //  10              LUTR
+                //  11              LUTR
+        CDI_DDX_KWR_W1K0R1 = 0x01,    // default
+                //  Data{red, KW}   LUT
+                //  00              LUTK
+                //  01              LUTW
+                //  10              LUTR
+                //  11              LUTR
+        CDI_DDX_KWR_W0K1R0 = 0x02,
+                //  Data{red, KW}   LUT
+                //  00              LUTR
+                //  01              LUTR
+                //  10              LUTW
+                //  11              LUTK
+        CDI_DDX_KWR_W1K0R0 = 0x03,
+                //  Data{red, KW}   LUT
+                //  00              LUTR
+                //  01              LUTR
+                //  10              LUTK
+                //  11              LUTW
+} CDI_DDX;
+
+typedef enum { // number of hsyncs between VCOM ready and source data output
+    CDI_CDI_17_HSYNC = 0x00,
+    CDI_CDI_16_HSYNC = 0x01,
+    CDI_CDI_15_HSYNC = 0x02,
+    CDI_CDI_14_HSYNC = 0x03,
+    CDI_CDI_13_HSYNC = 0x04,
+    CDI_CDI_12_HSYNC = 0x05,
+    CDI_CDI_11_HSYNC = 0x06,
+    CDI_CDI_10_HSYNC = 0x07, // default
+    CDI_CDI_9_HSYNC = 0x08,
+    CDI_CDI_8_HSYNC = 0x09,
+    CDI_CDI_7_HSYNC = 0x0A,
+    CDI_CDI_6_HSYNC = 0x0B,
+    CDI_CDI_5_HSYNC = 0x0C,
+    CDI_CDI_4_HSYNC = 0x0D,
+    CDI_CDI_3_HSYNC = 0x0E,
+    CDI_CDI_2_HSYNC = 0x0F,
+} CDI_CDI;
 class UC8179 : public UC8179Base
 {
 public:
@@ -311,6 +418,13 @@ public:
     void cmd_dual_spi_mode(DUSPI_MM_EN mm_pin, DUSPI_DUSPI_EN dual_spi) {
         this->command(0x15);
         this->data((uint8_t)mm_pin | (uint8_t)dual_spi);
+    }
+
+    void cmd_vcom_data_interval_setting(CDI_BDZ border_hi_impedance, CDI_BDV lut_selection, CDI_N2OCP copy_new_to_old, CDI_DDX data_polarity, CDI_CDI vcom_data_interval) {
+        // This command indicates the interval of VCOM and data output. When setting the vertical back porch, the total blanking will be kept (20 Hsync)
+        this->command(0x50);
+        this->data((uint8_t)border_hi_impedance | (uint8_t)lut_selection | (uint8_t)copy_new_to_old | (uint8_t)data_polarity);
+        this->data(vcom_data_interval);
     }
 
     void cmd_resolution_setting(uint hres, uint vres) {
