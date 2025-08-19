@@ -71,18 +71,6 @@ void UC8179Display_KW::draw_absolute_pixel_internal(int x, int y, Color color) {
     }
 }
 
-void UC8179Display_G4::initialize() {
-    UC8179DisplayBase::initialize();
-    this->kwr_mode_ = PSR_KWR_KW;
-    this->setup_panel();
-}
-
-void UC8179Display_G4::send_buffer_internal_() {
-    // KW mode, so we need to send OLD data and NEW data
-    this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
-    this->driver_->cmd_data_start_transmission_2(this->buffer_, this->get_buffer_size_());
-}
-
 void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
     if (x >= this->get_width_internal() || y >= this->get_height_internal() || x < 0 || y < 0)
     return;

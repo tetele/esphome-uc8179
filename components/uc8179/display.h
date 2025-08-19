@@ -49,16 +49,13 @@ protected:
     void draw_absolute_pixel_internal(int x, int y, Color color) override;
 };
 
-class UC8179Display_G4 : public UC8179DisplayBase {
+class UC8179Display_G4 : public UC8179Display_KW {
 public:
     display::DisplayType get_display_type() override { return display::DISPLAY_TYPE_GRAYSCALE; }
-
-    void initialize();
 
 protected:
     uint32_t pixels_per_byte_() { return 4; }
 
-    void send_buffer_internal_() override;
     void draw_absolute_pixel_internal(int x, int y, Color color) override;
 };
 
