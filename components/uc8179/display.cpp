@@ -32,8 +32,8 @@ void UC8179DisplayBase::setup() {
     this->init_internal_(size);
 }
 
-void UC8179DisplayBase::setup_panel(PSR_KWR kwr_mode) {
-    this->driver_->cmd_panel_setting(this->lut_location_ == LUT_LOCATION_OTP ? PSR_REG_LUT_FROM_OTP : PSR_REG_LUT_FROM_REG, kwr_mode, PSR_UD_UP, PSR_SHL_RIGHT, PSR_SHD_N_OFF, PSR_RST_N_NO_EFFECT);
+void UC8179DisplayBase::setup_panel() {
+    this->driver_->cmd_panel_setting(this->lut_location_, this->kwr_mode_, this->gate_scan_dir_, this->source_shift_dir_, this->booster_switch_, PSR_RST_N_NO_EFFECT);
 }
 
 void UC8179DisplayBase::send_buffer_internal_() {
