@@ -29,6 +29,8 @@ protected:
     PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
     PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
 
+    bool transmit_old_data_{false};
+
     void initialize();
 
     size_t get_buffer_size_() { return this->get_width() * this->get_height() / this->pixels_per_byte_(); }

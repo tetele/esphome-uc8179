@@ -42,12 +42,14 @@ void UC8179DisplayBase::initialize() {
 void UC8179Display_KW::initialize() {
     UC8179DisplayBase::initialize();
     this->kwr_mode_ = PSR_KWR_KW;
+    this->transmit_old_data_ = true;
     this->setup_panel();
 }
 
 void UC8179Display_KW::send_buffer_internal_() {
     // KW mode, so we need to send OLD data and NEW data
-    this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
+    if(this->transmit_old_data_)
+        this->driver_->cmd_data_start_transmission_1(this->buffer_, this->get_buffer_size_());
     this->driver_->cmd_data_start_transmission_2(this->buffer_, this->get_buffer_size_());
 }
 
