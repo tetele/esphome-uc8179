@@ -281,6 +281,13 @@ public:
         }
     }
 
+    void cmd_display_refresh() {
+        // While user sent this command, driver will refresh display (data/VCOM) according to SRAM data and LUT.
+        // After Display Refresh command, BUSY_N signal will become “0” and the refreshing of panel starts.
+        this->command(0x12);
+        this->wait_until_idle_();
+    }
+
     void cmd_data_start_transmission_2(const uint8_t *data, size_t length) {
         // This command starts transmitting data and write them into SRAM.
         // In KW mode, this command writes “NEW” data to SRAM.
