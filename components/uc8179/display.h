@@ -22,11 +22,11 @@ protected:
     UC8179 *driver_{nullptr};
     virtual uint32_t pixels_per_byte_();
 
-    PSR_REG_LUT lut_location_{PSR_REG_LUT_FROM_OTP};
+    PSR_REG lut_location_{PSR_REG_LUT_FROM_OTP};
     PSR_KWR kwr_mode_{PSR_KWR_KW};
     PSR_UD gate_scan_dir_{PSR_UD_UP};
     PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
-    PSR_SHD_N booster_switch{PSR_SHD_N_OFF};
+    PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
 
     void initialize();
 
