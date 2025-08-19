@@ -66,6 +66,7 @@ class GDEY075T7 : public UC8179Display_G4 {
 public:
   int get_width_internal() override { return 800; }
   int get_height_internal() override { return 480; }
+  void setup() override;
 };
 
 } // namespace uc8179

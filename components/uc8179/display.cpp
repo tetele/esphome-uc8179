@@ -15,19 +15,6 @@ void UC8179DisplayBase::update() {
 
 void UC8179DisplayBase::setup() {
     this->driver_->reset();
-
-    this->driver_->cmd_power_setting(PWR_BD_EN_OFF, PWR_VSR_EN_INTERNAL, PWR_VS_EN_INTERNAL, PWR_VG_EN_INTERNAL, PWR_VCOM_SLEW_DEFAULT, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);
-
-    BTST_BT_PHASE std_phase;
-    std_phase.period = BTST_BT_PHASE_PERIOD_10MS;
-    std_phase.strength = BTST_BT_PHASE_STRENGTH_3;
-    std_phase.off_time = BTST_BT_PHASE_OFF_6_58_US;
-    BTST_BT_PHASE c1_phase;
-    c1_phase.period = BTST_BT_PHASE_PERIOD_10MS;
-    c1_phase.strength = BTST_BT_PHASE_STRENGTH_2;
-    c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
-    this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
-
     this->init_internal_(this->get_buffer_size_());
 }
 
@@ -96,6 +83,22 @@ void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
 
     this->buffer_[pos] &= ~(0xC0 >> subpos);
     this->buffer_[pos] |= (color_bitmap >> subpos);
+}
+
+void GDEY075T7::setup() {
+    UC8179DisplayBase::setup();
+
+    this->driver_->cmd_power_setting(PWR_BD_EN_OFF, PWR_VSR_EN_INTERNAL, PWR_VS_EN_INTERNAL, PWR_VG_EN_INTERNAL, PWR_VCOM_SLEW_DEFAULT, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);
+
+    BTST_BT_PHASE std_phase;
+    std_phase.period = BTST_BT_PHASE_PERIOD_10MS;
+    std_phase.strength = BTST_BT_PHASE_STRENGTH_3;
+    std_phase.off_time = BTST_BT_PHASE_OFF_6_58_US;
+    BTST_BT_PHASE c1_phase;
+    c1_phase.period = BTST_BT_PHASE_PERIOD_10MS;
+    c1_phase.strength = BTST_BT_PHASE_STRENGTH_2;
+    c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
+    this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
 }
 
 } // namespace uc8179
