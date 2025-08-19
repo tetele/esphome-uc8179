@@ -121,6 +121,8 @@ void GDEY075T7::setup() {
     this->driver_->cmd_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
 
     this->driver_->cmd_dual_spi_mode(DUSPI_MM_EN_DISABLE, DUSPI_DUSPI_EN_DISABLE);
+
+    this->driver_->cmd_tcon_setting(TCON_S2G_12, TCON_G2S_12);
 }
 
 } // namespace uc8179
