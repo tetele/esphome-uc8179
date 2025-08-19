@@ -44,5 +44,24 @@ void UC8179DisplayBase::initialize() {
     this->driver_->cmd_power_on();
 }
 
+void UC8179Display_KW::initialize() {
+    UC8179DisplayBase::initialize();
+    this->kwr_mode_ = PSR_KWR_KW;
+    this->setup_panel();
+}
+
+void UC8179Display_KW::draw_absolute_pixel_internal(int x, int y, Color color) {
+    if (x >= this->get_width_internal() || y >= this->get_height_internal() || x < 0 || y < 0)
+        return;
+
+    const uint32_t pos = (x + y * this->get_width_internal()) / 8u;
+    const uint8_t subpos = x & 0x07;
+    if (!color.is_on()) {
+        this->buffer_[pos] |= 0x80 >> subpos;
+    } else {
+        this->buffer_[pos] &= ~(0x80 >> subpos);
+    }
+}
+
 } // namespace uc8179
 } // namespace esphome

@@ -33,5 +33,19 @@ protected:
     void send_buffer_internal_();
 };
 
+// Color scales
+
+class UC8179Display_KW : public UC8179DisplayBase {
+public:
+    display::DisplayType get_display_type() override { return display::DISPLAY_TYPE_BINARY; }
+
+    void initialize();
+
+protected:
+    uint32_t pixels_per_byte_() { return 8; }
+
+    void draw_absolute_pixel_internal(int x, int y, Color color) override;
+};
+
 } // namespace uc8179
 } // namespace esphome
