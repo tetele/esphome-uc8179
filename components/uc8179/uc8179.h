@@ -21,6 +21,7 @@ public:
 
     void command(uint8_t value);
     void data(uint8_t value);
+    void data(const uint8_t *data, size_t length);
 
     void reset() {
         if (this->reset_pin_ != nullptr) {

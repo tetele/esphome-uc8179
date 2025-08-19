@@ -42,6 +42,11 @@ void UC8179Base::data(uint8_t value) {
   this->write_byte(value);
   this->end_data_();
 }
+void UC8179Base::data(const uint8_t *data, size_t length) {
+    this->start_data_();
+    this->write_array(data, length);
+    this->end_data_();
+}
 
 void UC8179Base::start_command_() {
   this->dc_pin_->digital_write(false);
