@@ -17,6 +17,7 @@ public:
     void setup_panel();
 
     virtual void display();
+    virtual void deep_sleep();
 
 protected:
     UC8179 *driver_{nullptr};

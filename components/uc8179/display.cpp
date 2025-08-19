@@ -41,6 +41,11 @@ void UC8179DisplayBase::display() {
     this->driver_->cmd_display_refresh();
 }
 
+void UC8179DisplayBase::deep_sleep() {
+    this->driver_->cmd_power_off();
+    this->driver_->cmd_deep_sleep();
+}
+
 void UC8179DisplayBase::initialize() {
     this->driver_->reset();
     this->driver_->cmd_power_on();
