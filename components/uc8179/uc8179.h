@@ -141,6 +141,14 @@ typedef enum { // Internal VDHR power selection for Red pixel. (Default value: 0
     PWR_VDHR_LVL_12 = 0b00110000,
     PWR_VDHR_LVL_15 = 0b00111111,    // max
 } PWR_VDHR_LVL;
+
+// POWER OFF SEQUENCE SETTING (PFS) (R03H)
+typedef enum { // Source to gate power off interval time (in frames)
+    PFS_T_VDS_OFF_1 = 0b00000000,
+    PFS_T_VDS_OFF_2 = 0b00110000,
+    PFS_T_VDS_OFF_3 = 0b00110000,
+    PFS_T_VDS_OFF_4 = 0b00110000,
+} PFS_T_VDS_OFF;
 class UC8179 : public UC8179Base
 {
 public:
@@ -166,6 +174,11 @@ public:
         // kept until VDD turned OFF or Deep Sleep Mode. Source/Gate/Border/VCOM will be released to floating.
         this->command(0x02);
         this->wait_until_idle_();
+    }
+
+    void cmd_power_off_sequence_setting(PFS_T_VDS_OFF source_to_gate_min_off_interval) {
+        this->command(0x03);
+        this->data(source_to_gate_min_off_interval);
     }
 
     void cmd_power_on() {
