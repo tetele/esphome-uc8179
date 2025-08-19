@@ -189,6 +189,12 @@ public:
         this->wait_until_idle_();
     }
 
+    void cmd_power_on_measure() {
+        // This command enables the internal bandgap, which will be cleared by the next POF.
+        this->command(0x05);
+        this->wait_until_idle_();
+    }
+
     void cmd_deep_sleep() {
         // After this command is transmitted, the chip will enter Deep Sleep Mode to save power. Deep Sleep Mode will return to Standby
         // Mode by hardware reset. The only one parameter is a check code, the command will be executed if check code = 0xA5.
