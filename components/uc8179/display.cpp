@@ -8,6 +8,10 @@ namespace uc8179
 
 static const char *TAG = "uc8179.display";
 
+void UC8179DisplayBase::dump_config() {
+    ESP_LOGCONFIG(TAG, "UC8179 driven Display");
+}
+
 void UC8179DisplayBase::update() {
     this->do_update_();
     this->display();

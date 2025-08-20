@@ -11,6 +11,7 @@ namespace uc8179
 
 class UC8179DisplayBase : public display::DisplayBuffer {
 public:
+    void dump_config() override;
     void set_driver(UC8179 *driver) { this->driver_ = driver; }
     void update() override;
     void setup() override;
