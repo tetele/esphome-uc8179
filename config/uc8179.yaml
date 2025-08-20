@@ -24,4 +24,6 @@ uc8179:
 
 display:
   - platform: uc8179
+    id: eink_display
     model: GDEY075T7
+    update_interval: never
