@@ -20,7 +20,7 @@ MODELS = {
     "gdey075t7": GDEY075T7,
 }
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = display.FULL_DISPLAY_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(UC8179DisplayBase),
         cv.Required(CONF_MODEL): cv.one_of(*MODELS, lower=True),
@@ -36,3 +36,5 @@ async def to_code(config):
     uc8179 = await cg.get_variable(config[CONF_DRIVER_ID])
 
     cg.add(var.set_driver(uc8179))
+
+    await display.register_display(var, config)
