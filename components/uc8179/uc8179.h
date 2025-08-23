@@ -223,25 +223,25 @@ typedef enum { // Border LUT selection
     // KW without R mode
         // DDX[0] = 0 <=> W=0
             CDI_BDV_KW_W0K1_LUTBD = 0x00,
-            CDI_BDV_KW_W0K1_LUTKW = 0x01,
-            CDI_BDV_KW_W0K1_LUTWK = 0x02,
-            CDI_BDV_KW_W0K1_LUTKK = 0x03,
+            CDI_BDV_KW_W0K1_LUTKW = 0x10,
+            CDI_BDV_KW_W0K1_LUTWK = 0x20,
+            CDI_BDV_KW_W0K1_LUTKK = 0x30,
         // DDX[0] = 1 <=> W=1
             CDI_BDV_KW_W1K0_LUTKK = 0x00,
-            CDI_BDV_KW_W1K0_LUTWK = 0x01,
-            CDI_BDV_KW_W1K0_LUTKW = 0x02,
-            CDI_BDV_KW_W1K0_LUTBD = 0x03,
+            CDI_BDV_KW_W1K0_LUTWK = 0x10,
+            CDI_BDV_KW_W1K0_LUTKW = 0x20,
+            CDI_BDV_KW_W1K0_LUTBD = 0x30,
     // KWR mode
         // DDX[0] = 0
             CDI_BDV_KWR_W0K1_LUTBD = 0x00,
-            CDI_BDV_KWR_W0K1_LUTR = 0x01,
-            CDI_BDV_KWR_W0K1_LUTW = 0x02,
-            CDI_BDV_KWR_W0K1_LUTK = 0x03,
+            CDI_BDV_KWR_W0K1_LUTR = 0x10,
+            CDI_BDV_KWR_W0K1_LUTW = 0x20,
+            CDI_BDV_KWR_W0K1_LUTK = 0x30,
         // DDX[0] = 1
             CDI_BDV_KWR_W1K0_LUTK = 0x00,
-            CDI_BDV_KWR_W1K0_LUTW = 0x01,
-            CDI_BDV_KWR_W1K0_LUTR = 0x02,
-            CDI_BDV_KWR_W1K0_LUTBD = 0x03,
+            CDI_BDV_KWR_W1K0_LUTW = 0x10,
+            CDI_BDV_KWR_W1K0_LUTR = 0x20,
+            CDI_BDV_KWR_W1K0_LUTBD = 0x30,
 } CDI_BDV;
 
 typedef enum { // Copy frame data from NEW data to OLD data enable control after display refresh with NEW/OLD in KW mode
