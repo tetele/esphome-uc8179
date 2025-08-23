@@ -18,8 +18,8 @@ void UC8179DisplayBase::update() {
 }
 
 void UC8179DisplayBase::setup() {
-    this->driver_->reset();
     this->init_internal_(this->get_buffer_size_());
+    this->driver_->reset();
     this->driver_->set_lut_location(PSR_REG_LUT_FROM_OTP);
     this->driver_->set_kwr_mode(PSR_KWR_KW);
     this->driver_->set_gate_scan_dir(PSR_UD_UP);
