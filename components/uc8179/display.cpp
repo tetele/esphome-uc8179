@@ -8,10 +8,6 @@ namespace uc8179
 
 static const char *TAG = "uc8179.display";
 
-void UC8179DisplayBase::dump_config() {
-    ESP_LOGCONFIG(TAG, "UC8179 driven Display");
-}
-
 void UC8179DisplayBase::update() {
     this->do_update_();
     this->display();
@@ -96,6 +92,11 @@ void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
 
     this->buffer_[pos] &= ~(0xC0 >> subpos);
     this->buffer_[pos] |= (color_bitmap >> subpos);
+}
+
+void GDEY075T7_BW::dump_config() {
+    ESP_LOGCONFIG(TAG, "GDEY075T7 (Black/White) display");
+    ESP_LOGCONFIG(TAG, "  Resolution: %dx%d px", this->get_width(), this->get_height());
 }
 
 void GDEY075T7_BW::setup() {

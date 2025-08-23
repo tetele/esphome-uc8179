@@ -11,7 +11,6 @@ namespace uc8179
 
 class UC8179DisplayBase : public display::DisplayBuffer {
 public:
-    void dump_config() override;
     void set_driver(UC8179 *driver) { this->driver_ = driver; }
     void update() override;
     void setup() override;
@@ -59,9 +58,10 @@ protected:
 
 class GDEY075T7_BW : public UC8179Display_KW {
 public:
-  int get_width_internal() override { return 800; }
-  int get_height_internal() override { return 480; }
-  void setup() override;
+    void dump_config() override;
+    int get_width_internal() override { return 800; }
+    int get_height_internal() override { return 480; }
+    void setup() override;
 };
 
 } // namespace uc8179
