@@ -546,6 +546,12 @@ protected:
         this->command(0xE0);
         this->data((uint8_t)temperature_source | (uint8_t)cascade_clock);
     }
+
+    void cmd_force_temperature_set(uint8_t temperature) {
+        // This command is used for cascade to fix the temperature value of master and slave chip.
+        this->command(0xE5);
+        this->data(temperature);
+    }
 };
 
 } // namespace uc8179
