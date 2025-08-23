@@ -14,7 +14,7 @@ public:
     void set_driver(UC8179 *driver) { this->driver_ = driver; }
     void update() override;
     void setup() override;
-    void setup_panel();
+    void post_setup();
 
     virtual void display();
     virtual void deep_sleep();
@@ -35,7 +35,7 @@ class UC8179Display_KW : public UC8179DisplayBase {
 public:
     display::DisplayType get_display_type() override { return display::DISPLAY_TYPE_BINARY; }
 
-    void initialize() override;
+    void setup() override;
 
 protected:
     uint32_t pixels_per_byte_() { return 8; }
@@ -47,6 +47,8 @@ protected:
 class UC8179Display_G4 : public UC8179Display_KW {
 public:
     display::DisplayType get_display_type() override { return display::DISPLAY_TYPE_GRAYSCALE; }
+
+    void setup() override;
 
 protected:
     uint32_t pixels_per_byte_() { return 4; }

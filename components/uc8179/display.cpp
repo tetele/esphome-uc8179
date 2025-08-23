@@ -23,12 +23,10 @@ void UC8179DisplayBase::setup() {
     this->driver_->set_source_shift_dir(PSR_SHL_RIGHT);
     this->driver_->set_booster_switch(PSR_SHD_N_OFF);
     this->driver_->set_vcom_data_interval(CDI_CDI_10_HSYNC);
-    this->driver_->setup_waveform();
 }
 
-void UC8179DisplayBase::setup_panel() {
-    this->driver_->setup_panel();
-    this->driver_->setup_resolution(this->get_width_internal(), this->get_height_internal());
+void UC8179DisplayBase::post_setup() {
+    this->driver_->setup_waveform();
 }
 
 void UC8179DisplayBase::display() {
@@ -45,14 +43,16 @@ void UC8179DisplayBase::deep_sleep() {
 void UC8179DisplayBase::initialize() {
     this->driver_->reset();
     this->driver_->power_on();
+    this->driver_->setup_panel();
+    this->driver_->setup_resolution(this->get_width_internal(), this->get_height_internal());
 }
 
-void UC8179Display_KW::initialize() {
+void UC8179Display_KW::setup() {
+    ESP_LOGV(TAG, "Setting up B/W display");
+    UC8179DisplayBase::setup();
     this->driver_->set_kwr_mode(PSR_KWR_KW);
     this->driver_->set_transmit_old_data(true);
     this->driver_->set_copy_new_to_old(CDI_N2OCP_ENABLED);
-    UC8179DisplayBase::initialize();
-    this->setup_panel();
 }
 
 void UC8179Display_KW::send_buffer_internal_() {
@@ -70,6 +70,14 @@ void UC8179Display_KW::draw_absolute_pixel_internal(int x, int y, Color color) {
     } else {
         this->buffer_[pos] &= ~(0x80 >> subpos);
     }
+}
+
+void UC8179Display_G4::setup() {
+    ESP_LOGV(TAG, "Setting up grayscale 4 color display");
+    UC8179DisplayBase::setup();
+    this->driver_->set_kwr_mode(PSR_KWR_KW);
+    this->driver_->set_transmit_old_data(true);
+    this->driver_->set_copy_new_to_old(CDI_N2OCP_DISABLED);
 }
 
 void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
@@ -117,6 +125,8 @@ void GDEY075T7_BW::setup() {
     this->driver_->setup_dual_spi(false);
 
     this->driver_->set_non_overlap_period(TCON_G2S_12);
+
+    this->post_setup();
 }
 
 } // namespace uc8179
