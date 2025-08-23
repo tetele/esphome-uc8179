@@ -26,12 +26,12 @@ void UC8179DisplayBase::setup() {
     this->driver_->set_source_shift_dir(PSR_SHL_RIGHT);
     this->driver_->set_booster_switch(PSR_SHD_N_OFF);
     this->driver_->set_vcom_data_interval(CDI_CDI_10_HSYNC);
+    this->driver_->setup_waveform();
 }
 
 void UC8179DisplayBase::setup_panel() {
     this->driver_->setup_panel();
     this->driver_->setup_resolution(this->get_width_internal(), this->get_height_internal());
-    this->driver_->setup_waveform();
 }
 
 void UC8179DisplayBase::display() {
