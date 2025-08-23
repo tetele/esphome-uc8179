@@ -54,6 +54,7 @@ void UC8179DisplayBase::initialize() {
 void UC8179Display_KW::initialize() {
     this->driver_->set_kwr_mode(PSR_KWR_KW);
     this->driver_->set_transmit_old_data(true);
+    this->driver_->set_copy_new_to_old(CDI_N2OCP_ENABLED);
     UC8179DisplayBase::initialize();
     this->setup_panel();
 }
