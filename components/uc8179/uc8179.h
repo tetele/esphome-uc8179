@@ -369,6 +369,17 @@ typedef enum { // Gate to Source Non-overlap period in multiples of 667ns
     TCON_G2S_60 = 0x0E,
     TCON_G2S_64 = 0x0F,
 } TCON_G2S;
+
+// CASCADE SETTING (CCSET) (RE0H)
+typedef enum { // Let the value of slave’s temperature is same as the master’s
+    CCSET_TSFIX_SENSOR = 0x00, // Temperature value is defined by internal temperature sensor / external LM75 (default)
+    CCSET_TSFIX_FIXED = 0x02, // Temperature value is defined by TS_SET[7:0] registers.
+} CCSET_TSFIX;
+
+typedef enum { // Output clock enable/disable
+    CCSET_CCEN_DISABLE = 0x00, // Output 0V at CL pin. (default)
+    CCSET_CCEN_ENABLE = 0x01, // Output clock at CL pin to slave chip.
+} CCSET_CCEN;
 class UC8179 : public UC8179Base
 {
 public:
@@ -528,6 +539,12 @@ protected:
         this->data(hres&0xF8);
         this->data(vres>>8);
         this->data(vres&0xFF);
+    }
+
+    void cmd_cascade_setting(CCSET_TSFIX temperature_source, CCSET_CCEN cascade_clock) {
+        // This command is used for cascade when the chip is chained
+        this->command(0xE0);
+        this->data((uint8_t)temperature_source | (uint8_t)cascade_clock);
     }
 };
 
