@@ -14,10 +14,10 @@ UC8179DisplayBase = uc8179_ns.class_("UC8179DisplayBase", display.DisplayBuffer)
 UC8179Display_KW = uc8179_ns.class_("UC8179Display_KW", UC8179DisplayBase)
 UC8179Display_G4 = uc8179_ns.class_("UC8179Display_G4", UC8179Display_KW)
 
-GDEY075T7 = uc8179_ns.class_("GDEY075T7", UC8179Display_G4)
+GDEY075T7_BW = uc8179_ns.class_("GDEY075T7_BW", UC8179Display_KW)
 
 MODELS = {
-    "gdey075t7": GDEY075T7,
+    "gdey075t7_bw": GDEY075T7_BW,
 }
 
 CONFIG_SCHEMA = display.FULL_DISPLAY_SCHEMA.extend(

@@ -98,7 +98,7 @@ void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
     this->buffer_[pos] |= (color_bitmap >> subpos);
 }
 
-void GDEY075T7::setup() {
+void GDEY075T7_BW::setup() {
     UC8179DisplayBase::setup();
 
     this->driver_->setup_power(false, true, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);

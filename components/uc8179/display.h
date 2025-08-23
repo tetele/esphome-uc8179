@@ -57,7 +57,7 @@ protected:
 
 // Actual display models
 
-class GDEY075T7 : public UC8179Display_G4 {
+class GDEY075T7_BW : public UC8179Display_KW {
 public:
   int get_width_internal() override { return 800; }
   int get_height_internal() override { return 480; }
