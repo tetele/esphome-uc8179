@@ -125,6 +125,11 @@ void UC8179::load_image_data(const uint8_t *data, size_t length) {
     this->cmd_data_start_transmission_2(data, length);
 }
 
+void UC8179::load_image_data(const uint8_t *data1, size_t length1, const uint8_t *data2, size_t length2) {
+    this->cmd_data_start_transmission_1(data1, length1);
+    this->cmd_data_start_transmission_2(data2, length2);
+}
+
 bool UC8179::wait_until_idle_() {
     if (this->busy_pin_ == nullptr || !this->busy_pin_->digital_read()) {
         return true;

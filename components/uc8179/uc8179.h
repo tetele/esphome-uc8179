@@ -408,6 +408,7 @@ public:
     void deep_sleep() { this->cmd_deep_sleep(); };
 
     void load_image_data(const uint8_t *data, size_t length);
+    void load_image_data(const uint8_t *data1, size_t length1, const uint8_t *data2, size_t length2);
 
 protected:
     bool wait_until_idle_();
