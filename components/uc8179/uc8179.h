@@ -389,6 +389,7 @@ public:
     void set_gate_scan_dir(PSR_UD gate_scan_dir) { this->gate_scan_dir_ = gate_scan_dir; };
     void set_source_shift_dir(PSR_SHL source_shift_dir) { this->source_shift_dir_ = source_shift_dir; };
     void set_booster_switch(PSR_SHD_N booster_switch) { this->booster_switch_ = booster_switch; };
+    void set_copy_new_to_old(CDI_N2OCP copy_new_to_old) { this->copy_new_to_old_ = copy_new_to_old; };
     void set_vcom_data_interval(CDI_CDI vcom_data_interval) { this->vcom_data_interval_ = vcom_data_interval; };
     void set_non_overlap_period(TCON_G2S non_overlap_period) { this->non_overlap_period_ = non_overlap_period; };
     void set_transmit_old_data(bool transmit_old_data) { this->transmit_old_data_ = transmit_old_data; };
@@ -415,6 +416,7 @@ protected:
     PSR_UD gate_scan_dir_{PSR_UD_UP};
     PSR_SHL source_shift_dir_{PSR_SHL_RIGHT};
     PSR_SHD_N booster_switch_{PSR_SHD_N_OFF};
+    CDI_N2OCP copy_new_to_old_{CDI_N2OCP_DISABLED};
     CDI_CDI vcom_data_interval_{CDI_CDI_10_HSYNC};
     TCON_G2S non_overlap_period_{TCON_G2S_12}; // value is left-shifted 4 bits (<<4) to get the S2G interval
     bool transmit_old_data_{false};

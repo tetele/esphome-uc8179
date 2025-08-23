@@ -94,12 +94,10 @@ void UC8179::setup_resolution(uint width, uint height) {
 }
 
 void UC8179::setup_waveform() {
-    CDI_N2OCP copy_new_to_old = CDI_N2OCP_DISABLED;
     CDI_BDV lut_selection;
     CDI_DDX data_polarity;
     if(this->kwr_mode_ == PSR_KWR_KW) {
         if(this->transmit_old_data_) {
-            copy_new_to_old = CDI_N2OCP_ENABLED;
             data_polarity = CDI_DDX_KW_N_O_W0K1;
         } else {
             data_polarity = CDI_DDX_KW_N_W0K1;
@@ -109,7 +107,7 @@ void UC8179::setup_waveform() {
         data_polarity = CDI_DDX_KWR_W0K1R1;
         lut_selection = CDI_BDV_KWR_W0K1_LUTBD;
     }
-    this->cmd_vcom_data_interval_setting(CDI_BDZ_DISABLED, lut_selection, copy_new_to_old, data_polarity, this->vcom_data_interval_);
+    this->cmd_vcom_data_interval_setting(CDI_BDZ_DISABLED, lut_selection, this->copy_new_to_old_, data_polarity, this->vcom_data_interval_);
 
     this->cmd_tcon_setting((TCON_S2G)((this->non_overlap_period_ << 4) & 0xFF), this->non_overlap_period_);
 }
