@@ -400,6 +400,7 @@ public:
     void setup_resolution(uint width, uint height);
     void setup_waveform();
     void setup_booster_soft_start(BTST_BT_PHASE a, BTST_BT_PHASE b, BTST_BT_PHASE c1, BTST_PHC2EN c2_enabled, BTST_BT_PHASE c2);
+    void setup_fixed_temperature(uint8_t temp_offset);
 
     void power_on() { this->cmd_power_on(); };
     void power_off() { this->cmd_power_off(); };

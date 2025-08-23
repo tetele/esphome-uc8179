@@ -116,6 +116,11 @@ void UC8179::setup_booster_soft_start(BTST_BT_PHASE a, BTST_BT_PHASE b, BTST_BT_
     this->cmd_booster_soft_start(a, b, c1, c2_enabled, c2);
 }
 
+void UC8179::setup_fixed_temperature(uint8_t temperature) {
+    this->cmd_cascade_setting(CCSET_TSFIX_FIXED, CCSET_CCEN_DISABLE);
+    this->cmd_force_temperature_set(temperature);
+}
+
 void UC8179::load_image_data(const uint8_t *data, size_t length) {
     this->cmd_data_start_transmission_2(data, length);
 }
