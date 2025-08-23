@@ -12,6 +12,17 @@ void UC8179Base::setup()
 {
     // Code here should perform all component initialization,
     //  whether hardware, memory, or otherwise
+    this->dc_pin_->setup();
+    this->dc_pin_->digital_write(false);
+    if(this->reset_pin_ != nullptr) {
+        this->reset_pin_->setup();
+        this->reset_pin_->digital_write(true);
+    }
+    if(this->busy_pin_ != nullptr) {
+        this->busy_pin_->setup();
+    }
+
+    this->spi_setup();
 }
 
 void UC8179Base::loop()
@@ -23,13 +34,9 @@ void UC8179Base::loop()
 void UC8179Base::dump_config()
 {
     ESP_LOGCONFIG(TAG, "UC8179 EPD Driver");
-    ESP_LOGCONFIG(TAG, "  dc_pin = %s", this->dc_pin_->dump_summary());
-    if(this->busy_pin_ != nullptr) {
-        ESP_LOGCONFIG(TAG, "  busy_pin = %s", this->busy_pin_->dump_summary());
-    }
-    if(this->reset_pin_ != nullptr) {
-        ESP_LOGCONFIG(TAG, "  reset_pin = %s", this->reset_pin_->dump_summary());
-    }
+    LOG_PIN("  DC Pin: ", this->dc_pin_);
+    LOG_PIN("  Busy Pin: ", this->reset_pin_);
+    LOG_PIN("  Reset Pin: ", this->reset_pin_);
 }
 
 void UC8179Base::command(uint8_t value) {
