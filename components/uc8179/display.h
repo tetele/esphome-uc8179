@@ -24,7 +24,7 @@ protected:
     UC8179 *driver_{nullptr};
     virtual uint32_t pixels_per_byte_();
 
-    void initialize();
+    virtual void initialize();
 
     size_t get_buffer_size_() { return this->get_width() * this->get_height() / this->pixels_per_byte_(); }
     virtual void send_buffer_internal_() = 0;
@@ -36,7 +36,7 @@ class UC8179Display_KW : public UC8179DisplayBase {
 public:
     display::DisplayType get_display_type() override { return display::DISPLAY_TYPE_BINARY; }
 
-    void initialize();
+    void initialize() override;
 
 protected:
     uint32_t pixels_per_byte_() { return 8; }
