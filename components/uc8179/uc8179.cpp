@@ -126,7 +126,8 @@ bool UC8179::wait_until_idle_() {
             ESP_LOGE(TAG, "Timeout while displaying image!");
             return false;
         }
-        delay(1);
+        App.feed_wdt();
+        delay(10);
     }
     return true;
 }
