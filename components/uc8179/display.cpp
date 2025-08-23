@@ -15,6 +15,7 @@ void UC8179DisplayBase::dump_config() {
 void UC8179DisplayBase::update() {
     this->do_update_();
     this->display();
+    this->deep_sleep();
 }
 
 void UC8179DisplayBase::setup() {
