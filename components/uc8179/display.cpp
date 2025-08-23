@@ -37,6 +37,7 @@ void UC8179DisplayBase::display() {
 
 void UC8179DisplayBase::deep_sleep() {
     this->driver_->power_off();
+    delay(500);
     this->driver_->deep_sleep();
 }
 
@@ -120,7 +121,8 @@ void GDEY075T7_BW::dump_config() {
 }
 
 void GDEY075T7_BW::setup() {
-    UC8179DisplayBase::setup();
+    UC8179Display_KW::setup();
+    this->driver_->set_copy_new_to_old(CDI_N2OCP_DISABLED);
 
     this->driver_->setup_power(false, true, PWR_VG_LVL_20, PWR_VDH_LVL_15, PWR_VDL_LVL_15, PWR_VDHR_LVL_3);
 
@@ -130,7 +132,7 @@ void GDEY075T7_BW::setup() {
     std_phase.off_time = BTST_BT_PHASE_OFF_6_58_US;
     BTST_BT_PHASE c1_phase;
     c1_phase.period = BTST_BT_PHASE_PERIOD_10MS;
-    c1_phase.strength = BTST_BT_PHASE_STRENGTH_2;
+    c1_phase.strength = BTST_BT_PHASE_STRENGTH_6;
     c1_phase.off_time = BTST_BT_PHASE_OFF_0_27_US;
     this->driver_->setup_booster_soft_start(std_phase, std_phase, c1_phase, BTST_PHC2EN_DISABLE, std_phase);
 
