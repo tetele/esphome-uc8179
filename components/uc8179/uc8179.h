@@ -472,7 +472,6 @@ protected:
         // In Program mode, this command writes “OTP” data to SRAM for programming.
         this->command(0x10);
         this->data(data, length);
-        this->wait_until_idle_();
     }
 
     void cmd_data_stop(DSP_DATA_FLAG data_received) {
@@ -497,7 +496,6 @@ protected:
         // In KWR mode, this command writes “RED” data to SRAM.
         this->command(0x13);
         this->data(data, length);
-        this->wait_until_idle_();
     }
 
     void cmd_dual_spi_mode(DUSPI_MM_EN mm_pin, DUSPI_DUSPI_EN dual_spi) {
