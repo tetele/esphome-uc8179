@@ -80,26 +80,38 @@ void UC8179Display_G4::setup() {
     this->driver_->set_copy_new_to_old(CDI_N2OCP_DISABLED);
 }
 
+void UC8179Display_G4::send_buffer_internal_() {
+    uint32_t buffer_half_size = this->get_buffer_size_()/2;
+    this->driver_->load_image_data(this->buffer_, buffer_half_size, this->buffer_+buffer_half_size, buffer_half_size);
+}
+
 void UC8179Display_G4::draw_absolute_pixel_internal(int x, int y, Color color) {
     if (x >= this->get_width_internal() || y >= this->get_height_internal() || x < 0 || y < 0)
     return;
 
     const uint8_t brightness = std::max({color.red, color.green, color.blue, color.white});
-    uint8_t color_bitmap = 0x00;
-    if (brightness > 0x3F)        // >25%
-        if (brightness > 0x7F)      // >50%
-            if (brightness > 0xBF)    // >75%
-                color_bitmap = 0xC0;
+    uint8_t color_bitmap = 0x03;
+    if (brightness > 0x3F)       // DGRAY
+        if (brightness > 0x7F)      // LGRAY
+            if (brightness > 0xBF)    // WHITE
+                color_bitmap = 0x00;
             else
-                color_bitmap = 0x80;
+                color_bitmap = 0x02;
         else
-            color_bitmap = 0x40;
+            color_bitmap = 0x01;
 
-    const uint32_t pos = (x + y * this->get_width_internal()) / 4u;
-    const uint8_t subpos = (x & 0x03) << 1;  // number of bits to shift, = x%4 * 2
-
-    this->buffer_[pos] &= ~(0xC0 >> subpos);
-    this->buffer_[pos] |= (color_bitmap >> subpos);
+    const uint32_t pos = (x + y * this->get_width_internal()) / 8u;
+    const uint8_t subpos = x & 0x07;
+    if (color_bitmap & 0x02) {
+        this->buffer_[pos] |= 0x80 >> subpos;
+    } else {
+        this->buffer_[pos] &= ~(0x80 >> subpos);
+    }
+    if (color_bitmap & 0x01) {
+        this->buffer_[pos+this->get_buffer_size_()/2] |= 0x80 >> subpos;
+    } else {
+        this->buffer_[pos+this->get_buffer_size_()/2] &= ~(0x80 >> subpos);
+    }
 }
 
 void GDEY075T7_BW::dump_config() {
